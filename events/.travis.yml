@@ -1,0 +1,7 @@
+language: node_js
+node_js:
+  - 9.3.0
+sudo: required
+services:
+  - docker
+script: node server/index.js

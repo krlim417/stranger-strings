@@ -1,8 +1,8 @@
 # Define what image we want to build from
-FROM node:carbon
+FROM node:9.3.0
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/appThesisProject
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
