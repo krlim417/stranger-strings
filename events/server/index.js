@@ -5,21 +5,23 @@ const apm = require('elastic-apm-node').start({
   // Set custom APM Server URL (default: http://localhost:8200)
   serverUrl: '',
 });
+require('dotenv').config();
 const cluster = require('cluster');
-// const http = require('http');
 const express = require('express');
-const cassandra = require('cassandra-driver');
 const bodyParser = require('body-parser');
 const db = require('../database/index.js');
+const os = require('os');
 
 const app = express();
+const port = process.env.PORT || 8080;
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(apm.middleware.express());
 
 if (cluster.isMaster) {
   // Count the machine's CPUs
-  const cpuCount = require('os').cpus().length;
+  const cpuCount = os.cpus().length;
 
   // Create a worker for each CPU
   for (let i = 0; i < cpuCount; i += 1) {
@@ -31,9 +33,8 @@ if (cluster.isMaster) {
     console.log('Worker %d died :(', worker.id);
     cluster.fork();
   });
-// Code to run if we're in a worker process
+  // Code to run if we're in a worker process
 } else {
-
   app.get('/', (req, res) => {
     res.send(`Hello World! ${cluster.worker.id}`);
   });
@@ -45,7 +46,7 @@ if (cluster.isMaster) {
     });
   });
 
-  app.listen(8080, () => {
-    console.log('Worker %d running!', cluster.worker.id);
+  app.listen(port, () => {
+    console.log(`Worker %d running! ${cluster.worker.id}`);
   });
 }
