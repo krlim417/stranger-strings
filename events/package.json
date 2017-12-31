@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "nodemon server/index.js",
+    "create-table": "node database/dataTableCreator.js",
     "insert-data": "node database/dataGenerator.js"
   },
   "dependencies": {
