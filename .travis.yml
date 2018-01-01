@@ -5,4 +5,4 @@ sudo: required
 services:
   - docker
 before_script: cd events
-script: node server/index.js
+script: node index.js
